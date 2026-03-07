@@ -1,0 +1,180 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f2f2f7;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 28px;
+    color: #1d1d1f;
+    text-transform: capitalize;
+}
+
+.nav-btn {
+    text-decoration: none;
+    color: #007aff;
+    font-size: 24px;
+    padding: 10px 20px;
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.nav-btn:hover {
+    background: #e0e0e0;
+}
+
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.weekday {
+    text-align: center;
+    font-weight: 600;
+    color: #86868b;
+    padding: 10px;
+}
+
+.day-cell {
+    min-height: 120px;
+    background: #fafafa;
+    border-radius: 12px;
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    position: relative;
+}
+
+.day-cell.empty {
+    background: transparent;
+    border: none;
+}
+
+.day-number {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+
+.task-item {
+    background: white;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 8px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.task-item.completed .task-title {
+    text-decoration: line-through;
+    color: #86868b;
+}
+
+.task-check {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #007aff;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.task-item.completed .task-check {
+    background: #007aff;
+}
+
+.task-delete {
+    margin-left: auto;
+    color: #ff3b30;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.add-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #007aff;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    z-index: 100;
+}
+
+.modal-content {
+    background: white;
+    margin: 15% auto;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #86868b;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border: 1px solid #d2d2d7;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #007aff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}

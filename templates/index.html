@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Планировщик задач</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="{{ url_for('index', year=year, month=month-1) }}" class="nav-btn">←</a>
+            <h1>{{ month_name }} {{ year }}</h1>
+            <a href="{{ url_for('index', year=year, month=month+1) }}" class="nav-btn">→</a>
+        </div>
+
+        <div class="calendar-grid">
+            <div class="weekday">Пн</div><div class="weekday">Вт</div><div class="weekday">Ср</div>
+            <div class="weekday">Чт</div><div class="weekday">Пт</div><div class="weekday">Сб</div><div class="weekday">Вс</div>
+
+            {% for week in month_days %}
+                {% for day in week %}
+                    <div class="day-cell {% if day == 0 %}empty{% endif %}">
+                        {% if day != 0 %}
+                            <div class="day-number">{{ day }}</div>
+                            {% if day in tasks_by_day %}
+                                {% for task in tasks_by_day[day] %}
+                                    <div class="task-item {% if task.completed %}completed{% endif %}">
+                                        <a href="{{ url_for('toggle_task', task_id=task.id) }}" class="task-check"></a>
+                                        <span class="task-title">{{ task.title }}</span>
+                                        <a href="{{ url_for('delete_task', task_id=task.id) }}" class="task-delete">×</a>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <button class="add-btn" onclick="openModal({{ year }}, {{ month }}, {{ day }})">+</button>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Новая задача</h2>
+            <form method="POST" action="{{ url_for('add_task') }}">
+                <input type="hidden" name="task_date" id="taskDate">
+                <input type="hidden" name="year" value="{{ year }}">
+                <input type="hidden" name="month" value="{{ month }}">
+                <input type="text" name="title" class="form-input" placeholder="Название задачи" required>
+                <button type="submit" class="submit-btn">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal(year, month, day) {
+            const dateStr = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+            document.getElementById('taskDate').value = dateStr;
+            document.getElementById('taskModal').style.display = 'block';
+        }
+        function closeModal() {
+            document.getElementById('taskModal').style.display = 'none';
+        }
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('taskModal')) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
