@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О сайте</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box" style="max-width: 600px;">
+            <h2>📌 О нашем сайте</h2>
+
+            <div class="about-content">
+                <div class="about-section">
+                    <h3>🎯 Назначение</h3>
+                    <p>Этот планировщик задач помогает вам организовывать дела по дням месяца. Создавайте задачи, отмечайте выполненные и управляйте своим временем эффективно с помощью нашего прекрасного сайта</p>
+                </div>
+
+                <div class="about-section">
+                    <h3>✨ Возможности</h3>
+                    <ul class="feature-list">
+                        <li>📅 Просмотр задач в формате календаря</li>
+                        <li>➕ Быстрое добавление задач на любой день</li>
+                        <li>✅ Отметка выполненных задач</li>
+                        <li>🗑️ Удаление ненужных задач</li>
+                        <li>🔐 Личный аккаунт для каждого пользователя</li>
+                    </ul>
+                </div>
+                <div class="about-section">
+                    <h3>📞 Крутые разрабы:</h3>
+                    <p>Григорий (@grisha2109))</p>
+                    <p>Артем (@ArtemikDR)</p>
+                </div>
+            </div>
+
+            <a href="{{ url_for('index') }}" class="auth-btn" style="display: block; text-align: center; text-decoration: none; margin-top: 20px;">
+                ← Вернуться к календарю
+            </a>
+        </div>
+    </div>
+</body>
+</html>

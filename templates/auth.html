@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if action == 'register' %}Регистрация{% else %}Вход{% endif %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-box">
+            <h2>{% if action == 'register' %}Регистрация{% else %}Вход{% endif %}</h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, msg in messages %}
+                    <div class="flash {{ category }}">{{ msg }}</div>
+                {% endfor %}
+            {% endwith %}
+
+            <form method="POST" class="auth-form">
+                <input type="text" name="username" placeholder="Имя пользователя"
+                       required minlength="3" maxlength="80" autocomplete="username">
+                <input type="password" name="password" placeholder="Пароль"
+                       required minlength="4" autocomplete="current-password">
+                <button type="submit" class="auth-btn">
+                    {% if action == 'register' %}Зарегистрироваться{% else %}Войти{% endif %}
+                </button>
+            </form>
+
+            <div class="auth-switch">
+                {% if action == 'register' %}
+                    Уже есть аккаунт? <a href="{{ url_for('login') }}">Войти</a>
+                {% else %}
+                    Нет аккаунта? <a href="{{ url_for('register') }}">Зарегистрироваться</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
