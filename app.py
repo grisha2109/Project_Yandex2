@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, request, session, flash
 from models import db, Task, User
-from datetime import datetime
+from datetime import datetime, timedelta
 import calendar
 import os
 
@@ -73,6 +73,7 @@ def logout():
     session.clear()
     return redirect(url_for('login'))
 
+
 @app.route('/about')
 @login_required
 def about():
@@ -107,8 +108,17 @@ def index():
     ).all()
 
     tasks_by_day = {}
+    now = datetime.now()
+
     for task in tasks:
         day = task.date.day
+
+        task.is_urgent = False
+        if task.time and task.date == now.date():
+            task_datetime = datetime.combine(task.date, task.time)
+            if now < task_datetime < now + timedelta(hours=1):
+                task.is_urgent = True
+
         tasks_by_day.setdefault(day, []).append(task)
 
     return render_template('index.html',
@@ -146,12 +156,16 @@ def delete_task(task_id):
 @login_required
 def add_task():
     title = request.form.get('title')
-    task_date = datetime.strptime(request.form.get('task_date'), '%Y-%m-%d').date()
+
+    year = int(request.form.get('year'))
+    month = int(request.form.get('month'))
+    day_str = request.form.get('task_date')
     task_time = request.form.get('task_time')
-    year = request.form.get('year', datetime.now().year)
-    month = request.form.get('month', datetime.now().month)
 
     if title:
+
+        task_date = datetime.strptime(day_str, '%Y-%m-%d').date()
+
         time_obj = None
         if task_time:
             time_obj = datetime.strptime(task_time, '%H:%M').time()
@@ -159,7 +173,9 @@ def add_task():
         new_task = Task(title=title, date=task_date, time=time_obj, user_id=session['user_id'])
         db.session.add(new_task)
         db.session.commit()
+
     return redirect(url_for('index', year=year, month=month))
+
 
 if __name__ == '__main__':
     app.run(port=5000, host='127.0.0.1', debug=True)

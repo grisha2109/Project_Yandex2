@@ -35,20 +35,24 @@
         <div class="day-cell {% if day == 0 %}empty{% endif %}">
             {% if day != 0 %}
             <div class="day-number">{{ day }}</div>
-{% if day in tasks_by_day %}
-    {% for task in tasks_by_day[day] %}
-        <div class="task-item {% if task.completed %}completed{% endif %}">
-            <a href="{{ url_for('toggle_task', task_id=task.id) }}" class="task-check"></a>
-            <div class="task-content">
-                <span class="task-title">{{ task.title }}</span>
-                {% if task.time %}
-                    <span class="task-time">🕐 {{ task.time.strftime('%H:%M') }}</span>
+
+            <div class="tasks-wrapper">
+                {% if day in tasks_by_day %}
+                    {% for task in tasks_by_day[day] %}
+                        <div class="task-item {% if task.completed %}completed{% endif %} {% if task.is_urgent %}urgent{% endif %}">
+                            <a href="{{ url_for('toggle_task', task_id=task.id) }}" class="task-check"></a>
+                            <div class="task-content">
+                                <span class="task-title">{{ task.title }}</span>
+                                {% if task.time %}
+                                    <span class="task-time">{{ task.time.strftime('%H:%M') }}</span>
+                                {% endif %}
+                            </div>
+                            <a href="{{ url_for('delete_task', task_id=task.id) }}" class="task-delete">×</a>
+                        </div>
+                    {% endfor %}
                 {% endif %}
             </div>
-            <a href="{{ url_for('delete_task', task_id=task.id) }}" class="task-delete">×</a>
-        </div>
-    {% endfor %}
-{% endif %}
+
             <button class="add-btn" onclick="openModal({{ year }}, {{ month }}, {{ day }})">+</button>
             {% endif %}
         </div>
@@ -56,6 +60,7 @@
         {% endfor %}
     </div>
 </div>
+
 <div id="taskModal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
@@ -64,21 +69,26 @@
             <input type="hidden" name="task_date" id="taskDate">
             <input type="hidden" name="year" value="{{ year }}">
             <input type="hidden" name="month" value="{{ month }}">
+
             <input type="text" name="title" class="form-input" placeholder="Название задачи" required maxlength="100">
             <input type="time" name="task_time" class="form-input" style="padding: 12px;">
+
             <button type="submit" class="submit-btn">Добавить задачу</button>
         </form>
     </div>
 </div>
+
 <script>
     function openModal(year, month, day) {
         const dateStr = year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
         document.getElementById('taskDate').value = dateStr;
         document.getElementById('taskModal').style.display = 'block';
     }
+
     function closeModal() {
         document.getElementById('taskModal').style.display = 'none';
     }
+
     window.onclick = function(event) {
         if (event.target == document.getElementById('taskModal')) {
             closeModal();
